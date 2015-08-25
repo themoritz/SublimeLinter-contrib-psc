@@ -21,7 +21,7 @@ class Psc(Linter):
     syntax = 'purescript'
     cmd = 'gulp make --@'
     regex = (
-        r'Error in module (?P<module>\S+).*Error at (\S+) line (?P<line>\d+), column (?P<col>\d+)(.+)\n\s*(?P<message>.+)See http'
+        r' "?(?P<module>\/\S+)"? .*line (?P<line>\d+), column (?P<col>\d+)(?P<message>.+)See http'
     )
     re_flags = re.DOTALL
     multiline = True
@@ -32,6 +32,8 @@ class Psc(Linter):
         match, line, col, error, warning, message, near = (
             super().split_match(match)
         )
+        message = message.replace('\n', '')
         module = match.groupdict()['module']
+        print(module, line, col, message)
 
         return match, line, col, error, warning, module + " " + message, near
