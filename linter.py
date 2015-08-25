@@ -11,6 +11,7 @@
 """This module exports the Psc plugin class."""
 
 from SublimeLinter.lint import Linter, util
+import re
 
 
 class Psc(Linter):
@@ -20,8 +21,9 @@ class Psc(Linter):
     syntax = 'purescript'
     cmd = 'gulp make --@'
     regex = (
-        r'Error in module (?P<module>\S+)\nError at (\S+) line (?P<line>\d+), column (?P<col>\d+)(.+)\n  (?P<message>.+)'
+        r'Error in module (?P<module>\S+).*Error at (\S+) line (?P<line>\d+), column (?P<col>\d+)(.+)\n\s*(?P<message>.+)See http'
     )
+    re_flags = re.DOTALL
     multiline = True
     tempfile_suffix = '-'
     error_stream = util.STREAM_STDOUT
